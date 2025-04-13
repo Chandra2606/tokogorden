@@ -118,7 +118,7 @@ class Order
         return $items;
     }
 
-    public function create($userId, $items, $totalPrice, $shippingAddress, $phone, $notes = '')
+    public function create($userId, $items, $totalPrice, $shippingAddress, $phone, $notes = '', $paymentMethod = '')
     {
         $this->db->begin_transaction();
 
@@ -129,9 +129,9 @@ class Order
             }
 
             // Insert order
-            $stmt = $this->db->prepare("INSERT INTO orders (user_id, total_price, shipping_address, phone, notes) 
-                                        VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("idsss", $userId, $totalPrice, $shippingAddress, $phone, $notes);
+            $stmt = $this->db->prepare("INSERT INTO orders (user_id, total_price, shipping_address, phone, notes, payment_method) 
+                                        VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("idssss", $userId, $totalPrice, $shippingAddress, $phone, $notes, $paymentMethod);
             $stmt->execute();
             $orderId = $this->db->insert_id;
 
